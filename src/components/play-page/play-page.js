@@ -1,3 +1,4 @@
+import OrdinaryDrop from "./area/drop/normal-drop/normal-drop";
 import Area from "./area/game-area";
 import InterfaceArea from "./interface-area/interface";
 import template from "./play-page.html";
@@ -46,25 +47,56 @@ export default class PlayPage {
 }
 
   startGame() {
+    setInterval(()=> {
+      this.area.addDrop();
+    },3000,this.area.addDrop());
     
-    this.area.drop.repaintingElement(this.area.main);
-    this.dropsCount ++;
-    this.time = setInterval(() => {
-      this.area.drop.fallDrop();
-      this.checkFall();
-    }, 20);
+    setInterval(() => {
+      this.area.arrayDrops.forEach(item => {
+        item.fallDrop();
+        
+        if (
+          item.main.offsetTop >=
+          this.area.water.main.getBoundingClientRect().y -
+           item.main.getBoundingClientRect().height
+        ) {
+          // this.area.water.waterIncrease(); 
+          this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item),1);
+         item.main.remove();
+        }
+
+      });
+    },20) 
+
+
+    // setInterval(() => {
+    //   this.area.addDrop();
+    // },1000)
+    // ;
+    // this.time = setInterval(() => {
+    //   this.area.arrayDrops.forEach(item => item.fallDrop());
+    // }, 20)
+   
+
+    
+    // this.area.drop.repaintingElement(this.area.main);
+    // this.dropsCount ++;
+    // this.time = setInterval(() => {
+    //   this.area.drop.fallDrop();
+    //   this.checkFall();
+    // }, 20);
   }
 
-  checkFall() {
+  checkFall(item) {
     if (
-      this.area.drop.main.offsetTop >=
+      item.offsetTop >=
       this.area.water.main.getBoundingClientRect().y -
-        this.area.drop.main.getBoundingClientRect().height
+       item.main.getBoundingClientRect().height
     ) {
       this.area.water.waterIncrease(); 
       this.interface.score.decreaseScrore();
       this.missed++;
-      if(this.area.water.main.offsetTop / 2 <= this.area.drop.main.offsetHeight) {
+      if(this.area.water.main.offsetTop / 2 <= item.offsetHeight) {
         this.nextPage();
         console.log(`solutions  = ${this.solution}
         dropsCount = ${this.dropsCount}
@@ -101,42 +133,80 @@ export default class PlayPage {
   }
 
 
-  mathOperation() {
-    const firstValue = Number(this.area.drop.firstValue.textContent);
-    const secondValue = Number(this.area.drop.secondValue.textContent);
-    this.interface.keyboard.screen.display.value = "";
-    let solution;
-    switch (this.area.drop.operation.textContent) {
-      case "+":
-        solution = firstValue + secondValue;
-        break;
-      case "-":
-        solution = firstValue - secondValue;
-        break;
-
-      case "/":
-        solution = firstValue / secondValue;
-        break;
-      case "*":
-        solution = firstValue * secondValue;
-        break;
-    }
-    return solution;
+  mathOperation(item) {
+      const firstValue = Number(item.firstValue.textContent);
+      const secondValue = Number(item.secondValue.textContent);
+      this.interface.keyboard.screen.display.value = "";
+      let solution;
+      switch (item.operation.textContent) {
+        case "+":
+          solution = firstValue + secondValue;
+          break;
+        case "-":
+          solution = firstValue - secondValue;
+          break;
+  
+        case "/":
+          solution = firstValue / secondValue;
+          break;
+        case "*":
+          solution = firstValue * secondValue;
+          break;
+      }
+      return solution;
+ 
+    
+    
+    
+    
+    
+    
   }
 
   checkSolution() {
-    const displayValue = Number(this.interface.keyboard.screen.display.value);
-    const solution = this.mathOperation();
-    if (solution === displayValue) {
-      this.solution ++;
-      this.isDecided = true; //Решено
-      this.verifyDecided();
-      this.interface.score.increaseScore();
-      return;
+     const displayValue = Number(this.interface.keyboard.screen.display.value);
+     let counter = 0;
+     this.area.arrayDrops.forEach(item => {
+       const solution = this.mathOperation(item);
+       if(solution === displayValue) {
+         if(item.main.classList.contains("drop--platinum") && this.area.water.offsetHeight > this.area.water.standart) {
+           this.area.water.waterDecrease();
+          this.interface.score.increaseScore();
+          this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item),1);
+          item.main.remove();
+          counter++
+         }
+         if(item.main.classList.contains("drop--gold")) {
+           this.area.arrayDrops.forEach(item => {
+             item.main.remove();
+           })
+           this.area.arrayDrops.length = 0;
+           this.interface.score.increaseScore();
+           counter = 0;
+         }
+        this.interface.score.increaseScore();
+        this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item),1);
+         item.main.remove();
+         counter++
+         return;
+       }
+     }) 
+
+     if(counter === 0)  {
+       this.interface.score.decreaseScrore();
+     }
+  //   const solution = this.mathOperation();
+  //   if (solution === displayValue) {
+  //     this.solution ++;
+  //     this.isDecided = true; //Решено
+  //     this.verifyDecided();
+  //     this.interface.score.increaseScore();
+  //     return;
+  //   }
+  //   this.mistakes ++;
+  //   this.interface.score.decreaseScrore();
+  // }
     }
-    this.mistakes ++;
-    this.interface.score.decreaseScrore();
-  }
   setStatistics() {
 
   }

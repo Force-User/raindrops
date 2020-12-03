@@ -1,3 +1,5 @@
+import Drop from "../play-page/area/drop/drop-element";
+import OrdinaryDrop from "../play-page/area/drop/normal-drop/normal-drop";
 import template from "./parametrs-page.html";
 import "./parametrs-page.scss";
 export default class Parametrs {
@@ -75,11 +77,9 @@ export default class Parametrs {
     });
   }
   setValueToDrop(nextPage) {
-    this.operationCollection.forEach((item) => {
-      nextPage.area.drop.selectedOperations.add(item);
-    });
-    nextPage.area.drop.min = this.parametrsContent.valueContent.minInputValue.value;
-    nextPage.area.drop.max = this.parametrsContent.valueContent.maxInputValue.value;
+    Drop.prototype.selectedOperations = this.operationCollection;
+    Drop.prototype.minValue = this.parametrsContent.valueContent.minInputValue.value;
+    Drop.prototype.maxValue = this.parametrsContent.valueContent.maxInputValue.value;
   }
 
   getSelectedOperation() {

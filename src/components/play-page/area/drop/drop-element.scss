@@ -15,5 +15,11 @@
         position: absolute;
         left: 0;
     }
+    &--gold {
+        background-color: gold;
+    }
+    &--platinum {
+        background-attachment: #dfdcd9;
+    }
 }
 

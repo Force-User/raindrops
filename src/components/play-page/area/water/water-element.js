@@ -14,6 +14,7 @@ export default class Water {
         this.main = fragment.querySelector('.water');
     }
     waterIncrease() {
+        console.log(1);
         let i = 1;
         let time = setInterval(() => {
             if(i >= this.standart) {
@@ -21,9 +22,20 @@ export default class Water {
                 return;
             }
             i++;
-            this.main.style.height = `${this.main.offsetHeight + 1}px`
-            console.log(i);
-            
+            this.main.style.height = `${this.main.offsetHeight + 1}px` 
+        },10);
+        
+    }
+
+    waterDecrease() {
+        let i = 1;
+        let time = setInterval(() => {
+            if(i >= this.standart) {
+                clearInterval(time);
+                return;
+            }
+            i++;
+            this.main.style.height = `${this.main.offsetHeight - 1}px` 
         },10);
         
     }

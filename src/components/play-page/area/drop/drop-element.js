@@ -7,16 +7,12 @@ export default class Drop {
         this.firstValue;
         this.secondValue;
         this.operation;
-        this.selectedOperations = new Set();
-        this.min = null;
-        this.max = null;
-        this.speed = 5;
+        this.speed = 1;
     }
     
 
 
     init() {
-       
         const fragment = document.createElement('div');
         fragment.innerHTML = template;
         fragment.remove();
@@ -30,24 +26,23 @@ export default class Drop {
         this.main.style.top = `${this.main.offsetTop + this.speedFall}px`;
     }
 
-    repaintingElement(parent) {
-        this.main.remove();
-        this.setValue(parent);
+    repaintingElement() {
+        this.setValue();
         this.checkNumbers();
         if(this.checkDivide()){
-            parent.prepend(this.main);
+            this.parent.prepend(this.main);
         } else {
-            this.repaintingElement(parent);
+            this.repaintingElement();
         }
     }
 
     
 
-    setValue(parent) {
+    setValue() {
         this.main.style.top = `-${70}px`;
-        this.main.style.left = `${this.getRandomPosition(parent) - this.main.getBoundingClientRect().width * 2}px`;
-        this.firstValue.textContent = this.getRandomValue(this.min,this.max);
-        this.secondValue.textContent = this.getRandomValue(this.min,this.max);
+        this.main.style.left = `${this.getRandomPosition() - this.main.getBoundingClientRect().width * 2}px`;
+        this.firstValue.textContent = this.getRandomValue(this.minValue,this.maxValue);
+        this.secondValue.textContent = this.getRandomValue(this.minValue,this.maxValue);
         this.operation.textContent = this.getRandomOperation();
     }
 
@@ -56,9 +51,9 @@ export default class Drop {
     }
 
 
-    getRandomPosition(parentPage) {
+    getRandomPosition() {
         
-        const parentWidth = parentPage.getBoundingClientRect().width;
+        const parentWidth = this.parent.getBoundingClientRect().width;
         const dropWidth  = this.main.getBoundingClientRect().width * 2 ;
         return Math.ceil(Math.random() * (parentWidth - dropWidth) + dropWidth);
     }
@@ -87,3 +82,4 @@ export default class Drop {
         }
     } 
 }
+
