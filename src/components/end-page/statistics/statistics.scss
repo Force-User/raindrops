@@ -1,0 +1,51 @@
+@import "../../../sass/style.scss";
+.statistics {
+    padding: 20px;
+    border: 10px solid saddlebrown;
+    box-shadow: 0 0 2px 3px $color-dark;
+    background-color: #548987;
+    color: $color-light;
+    border-radius: 5px;
+    @include flex(flex-start,space-evenly);
+    flex-direction: column;
+    &__title {
+        font-size: 4rem;
+        margin-bottom: 20px;
+    }
+    &-list {
+        margin-bottom: 20px;
+    }
+    &-item {
+        font-size: 1.5rem; 
+        list-style-type: none ;
+        margin: 5px 0;
+        &__title {
+
+            display: inline;
+        }
+        &__value {
+            margin-left: 10px;
+        }
+     }
+    &-buttons {
+        &__button {
+            font-size: 1.7rem;
+            padding: 10px 20px;
+            margin: 0 20px;
+            color: $color-light;
+            border-radius: 10px;
+            border: 2px solid $color-dark;
+            transition: .5s;
+            &:nth-child(1) {
+                background-color: green;
+            }
+            &:nth-child(2) {
+                background-color: red;
+            }
+            &:hover {
+                box-shadow: 0 3px 2px 5px $color-dark;
+            }
+        }
+
+    }
+}

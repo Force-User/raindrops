@@ -1,0 +1,27 @@
+@import "../../sass/style.scss";
+.play-page {
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    @include flex();
+    display: none;
+    animation: show .5s forwards;
+    &--hidden {
+        animation: hidde .5s forwards;
+    }
+}
+
+@keyframes show {
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes hidde {
+    0% {
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}

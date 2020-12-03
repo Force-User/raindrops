@@ -1,0 +1,27 @@
+@import "../../../../sass/style.scss";
+.score {
+    width: 200px;
+    height: 100px;
+    @include flex();
+    text-align: center;
+    background-image: url("../../../../assets/image/score.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    &__value {
+        color:$color-light;
+        font-size: 30px;
+        font-weight: bolder;
+        transition: .5s;
+        &--increase {
+            transform: scale(1.7);
+            color:#f8db00;
+            transition: .5s;
+        }
+        &--decrease {
+            transform: scale(1.7);
+            color: blue;
+            transition: .5s;
+        }
+    }
+}

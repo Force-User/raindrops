@@ -1,0 +1,29 @@
+@import "../../../sass/style.scss";
+.game-area {
+    width: 70%;
+    height: 100%;
+    background-color: #e5ebe9;
+    @include flex(flex-end);
+    display: flex;
+    position: relative;
+    opacity: 0;
+    animation: show .5s forwards;
+    &--hidden {
+       animation: hidde .5s forwards;
+    }
+}
+
+@keyframes show {
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes hidde {
+    0%{
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
