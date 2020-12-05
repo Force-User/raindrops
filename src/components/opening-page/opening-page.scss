@@ -56,3 +56,21 @@
         opacity: 0;
     }
 }
+
+
+
+
+@media(max-width: 750px) {
+    .opening__title {
+        font-size: 45px;
+    }
+    .opening__drop {
+        width: 250px;
+    }
+    .opening-buttons__button {
+        padding: 20px;
+    }
+    .opening__img {
+        width: 250px;
+    }
+}

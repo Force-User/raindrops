@@ -11,6 +11,36 @@
     &--hidden {
        animation: hidde .5s forwards;
     }
+    
+}
+
+.back {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: black;
+    font-size: 100px;
+    text-transform: uppercase;
+    color: #fff;
+    z-index: 1;
+    @include flex();
+    display: none;
+}
+.pause {
+    position: absolute;
+    top: 100px;
+    left: 25px;
+    transition: .5s;
+    color:#fff;
+    z-index: 2;
+    font-weight: bolder;
+    cursor:pointer;
+    &:hover {
+        font-size: 20px;
+        color: gold;
+    }
 }
 
 @keyframes show {

@@ -16,12 +16,12 @@ export default class Game {
   }
 
   init() {
-    const container = document.createElement('div');
+    const container = document.createElement("div");
     container.innerHTML = template;
-    this.main = container.querySelector('.game');
-    this.fullscreen = container.querySelector('.fullscreen');
-    document.body.prepend(this.main,this.fullscreen);
-    
+    this.main = container.querySelector(".game");
+    this.fullscreen = container.querySelector(".fullscreen");
+    document.body.prepend(this.main, this.fullscreen);
+
     this.opening.init();
     this.parametrs.init();
     this.playPage.init();
@@ -31,12 +31,12 @@ export default class Game {
 
   handleEvent() {
     this.opening.main.addEventListener("animationend", (e) => {
-      if(e.animationName === "hidde") {
+      if (e.animationName === "hidde") {
         this.opening.hiddenComponent();
         this.opening.removePage();
         this.parametrs.showComponent();
+        this.playPage.isAutoPlay = this.opening.isAutoPlay;
       }
-     
     });
 
     this.parametrs.main.addEventListener("animationend", (e) => {
@@ -49,44 +49,42 @@ export default class Game {
       }
     });
 
-    this.playPage.main.addEventListener('animationend', e => {
-        if(e.animationName === "hidde") {
-            this.playPage.hiddePage();
-            this.playPage.removePage();
-            this.endPage.showPage();
-            this.setStatistics();
-        }
-    })
+    this.playPage.main.addEventListener("animationend", (e) => {
+      if (e.animationName === "hidde") {
+        this.playPage.hiddePage();
+        this.playPage.removePage();
+        this.endPage.showPage();
+        this.setStatistics();
+      }
+    });
 
-    this.endPage.main.addEventListener('animationend', e => {
-      if(e.animationName === "restart") {
-        console.log("restart");
+    this.endPage.main.addEventListener("animationend", (e) => {
+      if (e.animationName === "restart") {
         this.playPage.interface.score.clearScore();
         this.endPage.removePage();
         this.playPage.showPage();
         this.playPage.startGame();
-      } else if(e.animationName === "return") {
+      } else if (e.animationName === "return") {
         this.playPage.interface.score.clearScore();
         this.opening.showPage();
-        this.endPage.removePage()
+        this.endPage.removePage();
       }
-    })
+    });
 
-    this.fullscreen.addEventListener('click', (e) => {
+    this.fullscreen.addEventListener("click", (e) => {
       if (this.main.webkitRequestFullScreen) {
         this.main.webkitRequestFullScreen();
       } else {
         document.exitFullScreen();
       }
-    })
-
+    });
   }
 
   setStatistics() {
-      this.endPage.statistics.score.textContent = this.playPage.interface.score.getScore();
-      this.endPage.statistics.solutions.textContent = this.playPage.solution;
-      this.endPage.statistics.mistakes.textContent = this.playPage.mistakes;
-      this.endPage.statistics.missed.textContent = this.playPage.missed;
-      this.endPage.statistics.drops.textContent = this.playPage.dropsCount;
+    this.endPage.statistics.score.textContent = this.playPage.interface.score.getScore();
+    this.endPage.statistics.solutions.textContent = this.playPage.solution;
+    this.endPage.statistics.mistakes.textContent = this.playPage.mistakes;
+    this.endPage.statistics.missed.textContent = this.playPage.missed;
+    this.endPage.statistics.drops.textContent = this.playPage.dropsCount;
   }
 }

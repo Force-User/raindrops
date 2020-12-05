@@ -1,7 +1,7 @@
 @import "../../../../sass/style.scss";
 .drop {
     position: absolute;
-    top: -70px;
+    top: 200px;
     left: 50%;
     width: 70px;
     height: 70px;
@@ -19,7 +19,7 @@
         background-color: gold;
     }
     &--platinum {
-        background-attachment: #dfdcd9;
+        background-color: #dfdcd9;
     }
 }
 

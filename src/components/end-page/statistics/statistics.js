@@ -26,11 +26,11 @@ export default class Statistics {
     }
 
     removeAllValue() {
-        this.score = null;
-        this.solutions = null;
-        this.mistakes = null;
-        this.missed = null;
-        this.drops = null;
+        this.score.textContent = "";
+        this.solutions.textContent = "";
+        this.mistakes.textContent = "";
+        this.missed.textContent = "";
+        this.drops.textContent = "";
     }
 
-}
+} 

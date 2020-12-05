@@ -58,21 +58,19 @@ export default class Parametrs {
     this.parametrsContent.operationContent.main.addEventListener(
       "click",
       (e) => {
-        
         const selectedInput = e.target.closest("input");
-        console.log(selectedInput);
-        if(selectedInput) {
+
+        if (selectedInput) {
           if (selectedInput.checked) {
             this.operationCollection.add(selectedInput.dataset.name);
           } else {
             this.operationCollection.delete(selectedInput.dataset.name);
           }
-          console.log(this.operationCollection);
         }
-        }
-        
+      }
     );
     this.button.addEventListener("click", (e) => {
+      
       this.main.classList.add("parametrs--hidden");
     });
   }

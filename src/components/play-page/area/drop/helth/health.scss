@@ -1,0 +1,12 @@
+.heart {
+    background: none;
+    background-image: url("../../../../../assets/image/health.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border:none;
+      .drop__value[data-name="operation"] {
+        position: absolute;
+        left: 20%;
+    }
+}

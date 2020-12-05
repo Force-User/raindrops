@@ -4,17 +4,35 @@
     border: 10px solid #cab16d;
     background-color: #cab16d;
     &-screen {
+       
         height: 200px;
         box-shadow: inset 0 0 5px 1px;
         width: 100%;
         @include flex();
+        flex-direction: column;
         background-color: $color-light;
         border-bottom: 5px solid  #a7a4a4 ;
+        .health {
+            @include flex();
+            width: 80%;
+            &__heart {
+                width: 70px;
+                height: 70px;
+                background-image: url("../../../../assets/image/health.png");
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+                &--black {
+                    background-image: url("../../../../assets/image/BlackHealth.png");
+                }
+            }
+        }
         &__display {
             width: 80%;
             font-size: 65px;
             text-align: center;
             background-color: inherit;
+           
         }
     }
     &-buttons {
@@ -36,11 +54,14 @@
                 grid-column: span 2;
             }
             &:hover {
-              background-color: rgba(11, 247, 247, 0.476);
+              background-color: #d5dddd79;
             }
             &--press {
-                background-color: #00000078;
+                background-color:#00000078 ;
                 color:#fff;
+                &:hover {
+                    background-color: #00000078;
+                  }
             }
             
         
