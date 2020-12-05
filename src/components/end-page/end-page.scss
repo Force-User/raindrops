@@ -8,6 +8,7 @@
     animation: show .5s forwards;
     transition: .7s;
     &__title {
+      text-align: center;
       font-size: 10rem;
       text-transform: uppercase;
       color: #8c0a0a;
@@ -47,4 +48,8 @@
   }
   
   
-  
+  @media (max-width: 800px) {
+    .end-page__title {
+      font-size: 3rem;
+    }
+  }

@@ -12,21 +12,7 @@
         flex-direction: column;
         background-color: $color-light;
         border-bottom: 5px solid  #a7a4a4 ;
-        .health {
-            @include flex();
-            width: 80%;
-            &__heart {
-                width: 70px;
-                height: 70px;
-                background-image: url("../../../../assets/image/health.png");
-                background-position: center;
-                background-size: cover;
-                background-repeat: no-repeat;
-                &--black {
-                    background-image: url("../../../../assets/image/BlackHealth.png");
-                }
-            }
-        }
+        
         &__display {
             width: 80%;
             font-size: 65px;
@@ -67,5 +53,20 @@
         
         }
         
+    }
+}
+.health {
+    @include flex();
+    width: 80%;
+    &__heart {
+        width: 70px;
+        height: 70px;
+        background-image: url("../../../../assets/image/health.png");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        &--black {
+            background-image: url("../../../../assets/image/BlackHealth.png");
+        }
     }
 }

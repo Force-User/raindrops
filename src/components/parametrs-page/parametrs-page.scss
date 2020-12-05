@@ -20,7 +20,7 @@
         
       }
     &-content {
-        width: 1024px;
+        max-width: 1280px;
         @include flex(flex-start);
         flex-wrap: wrap;
         margin:auto 0;
@@ -31,26 +31,7 @@
         &__title {
 
         }
-        .value-content {
-            @include flex();
-            flex-direction: inherit;
-            .value-block {
-                margin: 50px 20px 0;
-                width: 300px;
-                height: 50px;
-                background-color: #fff;
-                @include flex(center, space-around);
-                border-radius:15px;
-                box-shadow: inset 0 0 5px 3px;
-                &__text {
-                    color: gray;
-                }
-                &__input {
-                
-                    width: 80%;
-                }
-            }
-        }
+        
     }
     &-operation {
        
@@ -58,26 +39,7 @@
         flex-direction: column;
         width: 280px;
 
-        .operation-content {
-            @include flex(flex-start);
-            flex-wrap: wrap;
-            margin-top: 30px;
-            & > label {
-                margin: 25px;
-                @include flex(center,space-between);
-                
-            }
-            &__text {
-                font-size: 2rem;
-                font-weight: 600;
-            
-            }
-            &__input {
-                width: 50px;
-                height: 50px;
-                margin-left: 10px
-            }
-        }
+        
     }
     &__button {
         margin-bottom: 50px;
@@ -101,6 +63,48 @@
    
 }
 
+.value-content {
+    @include flex();
+    flex-direction: inherit; 
+}
+
+.value-block {
+    margin: 50px 20px 0;
+    width: 300px;
+    height: 50px;
+    background-color: #fff;
+    @include flex(center, space-around);
+    border-radius:15px;
+    box-shadow: inset 0 0 5px 3px;
+    &__text {
+        color: gray;
+    }
+    &__input {
+    
+        width: 80%;
+    }
+}
+.operation-content {
+    @include flex(flex-start);
+    flex-wrap: wrap;
+    margin-top: 30px;
+    & > label {
+        margin: 25px;
+        @include flex(center,space-between);
+        
+    }
+    &__text {
+        font-size: 2rem;
+        font-weight: 600;
+    
+    }
+    &__input {
+        width: 50px;
+        height: 50px;
+        margin-left: 10px
+    }
+}
+
 @keyframes show {
     0% {
         opacity: 0;
@@ -117,4 +121,13 @@ opacity: 1;
     100%{
 opacity: 0;
     }
+}
+
+@media (max-width: 1280px) {
+   .parametrs__title {
+       font-size: 45px;
+   }
+   .value-block {
+       margin: 50px 0 0;
+   }
 }
