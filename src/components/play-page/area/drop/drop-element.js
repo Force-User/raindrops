@@ -37,7 +37,6 @@ export default class Drop {
   }
 
   setValue() {
-    console.log(this.maxValue);
     this.main.style.top = `-${100}px`;
     this.main.style.left = `${
       this.getRandomPosition() - this.main.getBoundingClientRect().width * 2

@@ -15,7 +15,6 @@ export default class PlayPage {
     this.isDecided = false;
     this.missed = 0;
     this.mistakes = 0;
-    this.dropsCount = 1;
     this.solution = 0;
     this.life = 3;
     this.level = 1;
@@ -48,7 +47,6 @@ export default class PlayPage {
     this.mistakes = 0;
     this.solution = 0;
     this.missed = 0;
-    this.dropsCount = 0;
   }
 
   startGame() {
@@ -117,23 +115,8 @@ export default class PlayPage {
 
   handleEvents() {
     this.area.pause.addEventListener("click", (e) => {
-      if (this.isPause === false) {
-        const playImage = `<path d="M68 39L0.499996 77.9711L0.5 0.0288552L68 39Z" fill="white"/>`;
-
-        this.area.pauseScreen.style.display = "flex";
-        this.area.pause.innerHTML = playImage;
-        clearInterval(this.timeGame);
-      } else {
-        const pauseImage = `<rect width="30" height="90" fill="white"/>
-        <rect x="40" width="30" height="90" fill="white"/>`;
-
-        this.area.pauseScreen.style.display = "none";
-        this.area.pause.innerHTML = pauseImage;
-        this.beginFallDrop();
-      }
-      this.isPause = !this.isPause;
+      this.togglePause();
     });
-
     this.interface.keyboard.buttons.main.addEventListener("click", (e) => {
       const selectedButton = e.target.closest("button");
       this.interface.keyboard.pressButton(selectedButton);
@@ -173,6 +156,18 @@ export default class PlayPage {
         this.interface.keyboard.screen.display.value += key.textContent;
       }
     });
+    document.addEventListener('visibilitychange', (e) => {
+      if(document.querySelector(".play-page")) {
+        const sound  = document.querySelector(`[data-name="water-sound"]`);
+        if(document.hidden) {
+          this.togglePause();
+          sound.pause();
+        }else {
+          sound.play();
+          this.togglePause();
+        }
+      }
+    })
   }
 
   mathOperation(item) {
@@ -309,6 +304,22 @@ export default class PlayPage {
     this.interface.keyboard.drawLife();
     document.querySelector(`[data-name="water-sound"]`).pause();
     this.main.remove();
+  }
+  togglePause() {
+    if (this.isPause === false) {
+      const playImage = `<path d="M68 39L0.499996 77.9711L0.5 0.0288552L68 39Z" fill="white"/>`;
+      this.area.pauseScreen.style.display = "flex";
+      this.area.pause.innerHTML = playImage;
+      clearInterval(this.timeGame);
+    } else {
+      const pauseImage = `<rect width="30" height="90" fill="white"/>
+      <rect x="40" width="30" height="90" fill="white"/>`;
+      console.log("adad", this.area.pauseScreen);
+      this.area.pauseScreen.style.display = "none";
+      this.area.pause.innerHTML = pauseImage;
+      this.beginFallDrop();
+    }
+    this.isPause = !this.isPause;
   }
 
   addOperation() {

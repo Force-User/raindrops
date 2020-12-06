@@ -20,7 +20,6 @@ export default class Statistics {
         this.solutions = this.main.querySelector(`[data-name="solutions"]`);
         this.mistakes = this.main.querySelector(`[data-name="mistakes"]`);
         this.missed = this.main.querySelector(`[data-name="missed"]`);
-        this.drops = this.main.querySelector(`[data-name="drops"]`);
         this.buttons = this.main.querySelector('.statistics-buttons');
 
     }
@@ -30,7 +29,6 @@ export default class Statistics {
         this.solutions.textContent = "";
         this.mistakes.textContent = "";
         this.missed.textContent = "";
-        this.drops.textContent = "";
     }
 
 } 

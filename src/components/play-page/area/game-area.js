@@ -45,7 +45,7 @@ export default class Area {
       }
     } else if (this.getRandom(1, 10) === 7 && this.point < 3) {
       const isDrop = !this.arrayDrops.find((item) =>
-        item.main.classList.contains("health__heart")
+        item.main.classList.contains("heart")
       );
       if (isDrop) {
         this.arrayDrops.push(new Heart());
