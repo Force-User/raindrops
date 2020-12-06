@@ -24,6 +24,7 @@ export default class Keyboard {
     );
 
     this.healths = this.main.querySelectorAll(".health__heart");
+    
   }
 
   deleteOneNumberToScreen() {

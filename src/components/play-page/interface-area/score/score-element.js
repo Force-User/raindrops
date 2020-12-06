@@ -15,8 +15,11 @@ export default class Score {
   }
 
   increaseScore() { 
-    this.score.textContent = Number(this.score.textContent) + this.scoreCounter;
+    let score = Number(this.score.textContent);
+    score += this.scoreCounter;
+    this.score.textContent = score;
     this.scoreCounter++;
+    
   }
   getScore() {
     return this.score.textContent;
@@ -27,8 +30,13 @@ export default class Score {
   }
 
   decreaseScrore() {
-    if (this.score.textContent > "0") {
-      this.score.textContent -= 15;
+    let score = Number(this.score.textContent);
+    score -= 10;
+    if (score < 0) {
+      this.score.textContent = 0;
+      return
     }
+
+    this.score.textContent = score;
   }
 }

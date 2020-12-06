@@ -5,7 +5,6 @@ import "./game-area.scss";
 import OrdinaryDrop from "./drop/normal-drop/normal-drop";
 import GoldDrop from "./drop/gold-drop/gold-drop";
 import PlatinumDrop from "./drop/platinum-drop/platinum-drop";
-import Health from "./drop/heart/heart";
 import Heart from "./drop/heart/heart";
 
 export default class Area {
@@ -13,7 +12,6 @@ export default class Area {
     this.main;
     this.water = new Water();
     this.arrayDrops = [];
-    this.index = 0;
     this.point = 3;
   }
   init() {

@@ -79,6 +79,42 @@ export default class Drop {
     return true;
   }
 
+  destroyDrop() {
+    const dropTop = this.main.getBoundingClientRect().y;
+    const dropLeft = this.main.getBoundingClientRect().x;
+    this.main.remove();
+
+    const newDrop = document.createElement('div');
+    newDrop.classList.add("drop--boom");
+    newDrop.style.top = `${dropTop}px`;
+    newDrop.style.left = `${dropLeft}px`;
+    this.parent.prepend(newDrop);
+    newDrop.addEventListener('animationend', (e) => {
+      if(e.animationName === "boom") {
+        newDrop.remove();
+      }
+
+    })
+  }
+
+  sprayWater() {
+const dropTop = this.main.getBoundingClientRect().y;
+    const dropLeft = this.main.getBoundingClientRect().x;
+    this.main.remove();
+    
+    const newDrop = document.createElement('div');
+    newDrop.classList.add("drop--spray");
+    newDrop.style.top = `${dropTop}px`;
+    newDrop.style.left = `${dropLeft}px`;
+    this.parent.prepend(newDrop);
+    newDrop.addEventListener('animationend', (e) => {
+      if(e.animationName === "spray") {
+        newDrop.remove();
+      }
+
+    })
+  }
+
   checkNumbers() {
     const first = Number(this.firstValue.textContent);
     const second = Number(this.secondValue.textContent);

@@ -1,5 +1,4 @@
 import Drop from "./area/drop/drop-element";
-import OrdinaryDrop from "./area/drop/normal-drop/normal-drop";
 import Area from "./area/game-area";
 import InterfaceArea from "./interface-area/interface";
 import template from "./play-page.html";
@@ -42,6 +41,7 @@ export default class PlayPage {
     document.querySelector(".game").prepend(this.main);
     this.main.classList.remove("play-page--hidden");
     this.main.style.display = "flex";
+    this.interface.keyboard.buttons.main.focus();
   }
 
   clearStatistics() {
@@ -50,7 +50,6 @@ export default class PlayPage {
     this.missed = 0;
     this.dropsCount = 0;
   }
- 
 
   startGame() {
     document.querySelector(`[data-name="water-sound"]`).play();
@@ -104,25 +103,32 @@ export default class PlayPage {
       this.area.water.waterIncrease();
       this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item), 1);
       this.missed++;
-      if (this.area.water.main.offsetTop / 2  <= item.main.getBoundingClientRect().height * 2) {
+      if (
+        this.area.water.main.offsetTop / 2 <=
+        item.main.getBoundingClientRect().height * 2
+      ) {
         this.nextPage();
         clearInterval(this.timeAddDrop);
         clearInterval(this.timeGame);
       }
-      item.main.remove();
+      item.sprayWater();
     }
   }
 
   handleEvents() {
     this.area.pause.addEventListener("click", (e) => {
       if (this.isPause === false) {
-       this.area.pauseScreen.style.display = "flex";
-       this.area.pause.innerHTML = `<rect width="30" height="90" fill="white"/>
-       <rect x="40" width="30" height="90" fill="white"/>`
+        const playImage = `<path d="M68 39L0.499996 77.9711L0.5 0.0288552L68 39Z" fill="white"/>`;
+
+        this.area.pauseScreen.style.display = "flex";
+        this.area.pause.innerHTML = playImage;
         clearInterval(this.timeGame);
       } else {
+        const pauseImage = `<rect width="30" height="90" fill="white"/>
+        <rect x="40" width="30" height="90" fill="white"/>`;
+
         this.area.pauseScreen.style.display = "none";
-        this.area.pause.innerHTML = `<path d="M68 39L0.499996 77.9711L0.5 0.0288552L68 39Z" fill="white"/>`
+        this.area.pause.innerHTML = pauseImage;
         this.beginFallDrop();
       }
       this.isPause = !this.isPause;
@@ -132,7 +138,6 @@ export default class PlayPage {
       const selectedButton = e.target.closest("button");
       this.interface.keyboard.pressButton(selectedButton);
       if (selectedButton) {
-        
         if (selectedButton.dataset.name === "NumpadEnter") {
           this.checkSolution();
           this.interface.keyboard.clearScreen();
@@ -146,27 +151,27 @@ export default class PlayPage {
         }
         this.interface.keyboard.screen.display.value +=
           selectedButton.textContent;
-          document.querySelector(`[data-name="click-sound"]`).play();
+        document.querySelector(`[data-name="click-sound"]`).play();
       }
     });
 
-    window.addEventListener("keydown", (e) => {
-      const key = this.interface.keyboard.buttons.main.querySelector(
-        `[data-name="${e.code}"]`
-        
-      );
+    document.addEventListener("keydown", (e) => {
+      if (document.querySelector(".play-page")) {
+        const key = this.interface.keyboard.buttons.main.querySelector(
+          `[data-name="${e.code}"]`
+        );
 
-      
-      this.interface.keyboard.pressButton(key);
-      if (e.code === "NumpadEnter" || e.code === "Enter") {
-        this.checkSolution();
-        this.interface.keyboard.clearScreen();
-        return;
-      } else if (e.code === "Backspace") {
-        this.interface.keyboard.deleteOneNumberToScreen();
-        return;
+        this.interface.keyboard.pressButton(key);
+        if (e.code === "NumpadEnter" || e.code === "Enter") {
+          this.checkSolution();
+          this.interface.keyboard.clearScreen();
+          return;
+        } else if (e.code === "Backspace") {
+          this.interface.keyboard.deleteOneNumberToScreen();
+          return;
+        }
+        this.interface.keyboard.screen.display.value += key.textContent;
       }
-      this.interface.keyboard.screen.display.value += key.textContent;
     });
   }
 
@@ -230,7 +235,7 @@ export default class PlayPage {
         } else {
           this.interface.score.increaseScore();
           this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item), 1);
-          item.main.remove();
+          item.destroyDrop();
           counter++;
           document.querySelector(`[data-name="pop-sound"]`).play();
         }
@@ -238,7 +243,7 @@ export default class PlayPage {
         this.level++;
         this.addOperation();
         this.increaseNumber();
-        
+
         if (this.timeInterval > 1000) {
           this.timeInterval -= 10;
           clearInterval(this.timeAddDrop);
@@ -257,13 +262,12 @@ export default class PlayPage {
       this.mistakes++;
     }
   }
- 
+
   addDrop(timeInterval) {
     if (this.isAutoPlay) {
       this.timeAddDrop = setInterval(
         () => {
           if (!this.isPause) {
-          
             this.area.addDrop();
             this.AutoPlay();
           }
@@ -276,9 +280,7 @@ export default class PlayPage {
       this.timeAddDrop = setInterval(
         () => {
           if (!this.isPause) {
-           
             this.area.addDrop();
-            
           }
         },
         timeInterval,
@@ -309,21 +311,19 @@ export default class PlayPage {
     this.main.remove();
   }
 
-  addOperation () {
-    if(this.level > 20 && Drop.prototype.selectedOperations.size < 2) {
+  addOperation() {
+    if (this.level > 20 && Drop.prototype.selectedOperations.size < 2) {
       Drop.prototype.selectedOperations.add("-");
-    }else if(this.level > 30 && Drop.prototype.selectedOperations.size < 3) {
+    } else if (this.level > 30 && Drop.prototype.selectedOperations.size < 3) {
       Drop.prototype.selectedOperations.add("*");
-    }else if(this.level > 50 && Drop.prototype.selectedOperations.size < 4) {
-      Drop.prototype.selectedOperations.add("/")
+    } else if (this.level > 50 && Drop.prototype.selectedOperations.size < 4) {
+      Drop.prototype.selectedOperations.add("/");
     }
   }
 
   increaseNumber() {
-    if(this.level % 5 === 0) {
+    if (this.level % 5 === 0) {
       Drop.prototype.maxValue++;
     }
-    
   }
 }
-
