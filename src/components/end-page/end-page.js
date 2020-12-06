@@ -28,6 +28,7 @@ export default class EndPage {
       const selectedButton = e.target.closest("button");
 
       if (selectedButton) {
+        document.querySelector(`[data-name="button-sound"]`).play();
         if (selectedButton.dataset.name === "restart") {
           this.restartGame();
         } else if (selectedButton.dataset.name === "return") {

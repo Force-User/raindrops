@@ -1,8 +1,8 @@
 import Drop from "../drop-element";
-import "./health.scss";
+import "./heart.scss";
 
 
-export default class Health extends Drop {
+export default class Heart extends Drop {
     init() {
         super.init();
         this.main.classList.add("heart");

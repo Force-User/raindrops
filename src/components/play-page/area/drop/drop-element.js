@@ -6,6 +6,7 @@ export default class Drop {
     this.firstValue;
     this.secondValue;
     this.operation;
+    
   }
 
   init() {
@@ -16,7 +17,9 @@ export default class Drop {
     this.firstValue = this.main.querySelector(`[data-name="firstValue"]`);
     this.secondValue = this.main.querySelector(`[data-name="secondValue"]`);
     this.operation = this.main.querySelector(`[data-name="operation"]`);
+    
   }
+
 
   fallDrop() {
     this.main.style.top = `${this.main.offsetTop + this.speedFall}px`;
@@ -34,6 +37,7 @@ export default class Drop {
   }
 
   setValue() {
+    console.log(this.maxValue);
     this.main.style.top = `-${100}px`;
     this.main.style.left = `${
       this.getRandomPosition() - this.main.getBoundingClientRect().width * 2
@@ -76,10 +80,12 @@ export default class Drop {
   }
 
   checkNumbers() {
-    if (this.firstValue.textContent < this.secondValue.textContent) {
+    const first = Number(this.firstValue.textContent);
+    const second = Number(this.secondValue.textContent);
+    if (first < second) {
       [this.firstValue.textContent, this.secondValue.textContent] = [
-        this.secondValue.textContent,
-        this.firstValue.textContent,
+        second,
+        first,
       ];
     }
   }

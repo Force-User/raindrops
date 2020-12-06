@@ -4,6 +4,7 @@ export default class Score {
   constructor() {
     this.main;
     this.score;
+    this.scoreCounter = 10;
   }
 
   init() {
@@ -13,8 +14,9 @@ export default class Score {
     this.score = fragment.querySelector(".score__value");
   }
 
-  increaseScore() {
-    this.score.textContent = Number(this.score.textContent) + 15;
+  increaseScore() { 
+    this.score.textContent = Number(this.score.textContent) + this.scoreCounter;
+    this.scoreCounter++;
   }
   getScore() {
     return this.score.textContent;

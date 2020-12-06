@@ -66,7 +66,7 @@ export default class Keyboard {
     );
   }
 
-  ah() {
+  addHeart() {
     const array = Array.from(this.healths);
     array.every((item) => {
       if (item.classList.contains("health__heart--black")) {
@@ -76,7 +76,7 @@ export default class Keyboard {
       return true;
     });
   }
-  dh() {
+  removeHeart() {
     const array = Array.from(this.healths);
     array.every((item, index) => {
       if (

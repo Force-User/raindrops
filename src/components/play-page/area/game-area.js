@@ -5,7 +5,8 @@ import "./game-area.scss";
 import OrdinaryDrop from "./drop/normal-drop/normal-drop";
 import GoldDrop from "./drop/gold-drop/gold-drop";
 import PlatinumDrop from "./drop/platinum-drop/platinum-drop";
-import Health from "./drop/helth/health";
+import Health from "./drop/heart/heart";
+import Heart from "./drop/heart/heart";
 
 export default class Area {
   constructor() {
@@ -27,7 +28,7 @@ export default class Area {
   }
 
   addDrop() {
-    if (this.getRandom(1, 50) === 45 && this.arrayDrops.length >= 3) {
+    if (this.getRandom(1, 100) > 50 && this.arrayDrops.length >= 2) {
       const isDrop = !this.arrayDrops.find((item) =>
         item.main.classList.contains("drop--gold")
       );
@@ -35,7 +36,7 @@ export default class Area {
         this.arrayDrops.push(new GoldDrop());
       }
     } else if (
-      this.getRandom(1, 70) === 65 &&
+      this.getRandom(1, 100) > 70 &&
       this.water.main.getBoundingClientRect().height > this.water.standart
     ) {
       const isDrop = !this.arrayDrops.find((item) =>
@@ -49,11 +50,11 @@ export default class Area {
         item.main.classList.contains("health__heart")
       );
       if (isDrop) {
-        this.arrayDrops.push(new Health());
+        this.arrayDrops.push(new Heart());
       }
     }
 
-    this.arrayDrops.push(new OrdinaryDrop());
+    this.arrayDrops.push(new Drop());
     this.arrayDrops.forEach((item) => {
       if (!item.main) {
         item.init();

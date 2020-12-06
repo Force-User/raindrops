@@ -10,11 +10,11 @@ export default class OpeningPage {
   }
 
   init() {
-    const fragment = document.createElement("div");
-    fragment.innerHTML = template;
-    this.main = fragment.querySelector(".opening");
-    this.title = fragment.querySelector(".opening__title");
-    this.buttons = fragment.querySelector(".opening-buttons");
+    const container = document.createElement("div");
+    container.innerHTML = template;
+    this.main = container.querySelector(".opening");
+    this.title = this.main.querySelector(".opening__title");
+    this.buttons = this.main.querySelector(".opening-buttons");
 
     document.querySelector(".game").prepend(this.main);
     this.handleEvent();
@@ -24,6 +24,7 @@ export default class OpeningPage {
     this.buttons.addEventListener("click", (e) => {
       const selectedButton = e.target.closest("button");
       if (selectedButton) {
+        document.querySelector(`[data-name="button-sound"]`).play();
         this.main.classList.add("opening--hidden");
         if (selectedButton.dataset.name === "start") {
           this.isAutoPlay = false;
@@ -40,7 +41,7 @@ export default class OpeningPage {
     this.main.style.display = "flex";
   }
 
-  hiddenComponent() {
+  hiddenPage() {
     this.main.style.display = "none";
   }
   removePage() {

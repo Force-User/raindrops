@@ -32,7 +32,7 @@ export default class Game {
   handleEvent() {
     this.opening.main.addEventListener("animationend", (e) => {
       if (e.animationName === "hidde") {
-        this.opening.hiddenComponent();
+        this.opening.hiddenPage();
         this.opening.removePage();
         this.parametrs.showComponent();
         this.playPage.isAutoPlay = this.opening.isAutoPlay;

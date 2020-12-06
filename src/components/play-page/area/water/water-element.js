@@ -4,7 +4,7 @@ import "./water-element.scss";
 export default class Water {
   constructor() {
     this.main;
-    this.standart = 70;
+    this.standart = 50;
   }
 
   init() {

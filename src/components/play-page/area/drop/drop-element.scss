@@ -7,19 +7,20 @@
     height: 70px;
     @include flex();
     flex-direction: column;
-    background-color: #6767a0;
-    border:3px solid #000;
+    background-color: $color-water;
+    border:3px solid $color-dark;
     border-radius: 50%;
-    color: #fff;
+    color: $color-light;
     &__value[data-name="operation"] {
         position: absolute;
         left: 0;
     }
     &--gold {
-        background-color: gold;
+        background-color: $color-drop-bonus;
+        color:$color-dark;
     }
     &--platinum {
-        background-color: #dfdcd9;
+        background-color:$color-drop-plat;
     }
 }
 

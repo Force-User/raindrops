@@ -19,6 +19,7 @@ export default class PlayPage {
     this.dropsCount = 1;
     this.solution = 0;
     this.life = 3;
+    this.level = 1;
     this.timeInterval = 6000;
     this.isAutoPlay = false;
     this.isPause = false;
@@ -49,24 +50,11 @@ export default class PlayPage {
     this.missed = 0;
     this.dropsCount = 0;
   }
-  hiddePage() {
-    this.main.style.display = "none";
-  }
-  nextPage() {
-    this.main.classList.add("play-page--hidden");
-    clearInterval(this.timeAddDrop);
-    clearInterval(this.timeGame);
-  }
-
-  removePage() {
-    this.main.classList.remove("play-page--hidden");
-    this.life = 3;
-    this.area.destroyAllDrops();
-    this.interface.keyboard.drawLife();
-    this.main.remove();
-  }
+ 
 
   startGame() {
+    document.querySelector(`[data-name="water-sound"]`).play();
+    document.querySelector(`[data-name="water-sound"]`).volume = 0.2;
     this.addDrop(this.timeInterval);
 
     this.beginFallDrop();
@@ -107,25 +95,21 @@ export default class PlayPage {
 
   checkFall(item) {
     if (
-      item.main.offsetTop >=
+      item.main.offsetTop + 100 >=
       this.area.water.main.getBoundingClientRect().y -
         item.main.getBoundingClientRect().height
     ) {
+      document.querySelector(`[data-name="drop-sound"]`).play();
       this.interface.score.decreaseScrore();
       this.area.water.waterIncrease();
       this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item), 1);
-      item.main.remove();
       this.missed++;
-      if (this.area.water.main.offsetTop / 2 <= item.main.offsetHeight) {
+      if (this.area.water.main.offsetTop / 2  <= item.main.getBoundingClientRect().height * 2) {
         this.nextPage();
-        console.log(`solutions  = ${this.solution}
-        dropsCount = ${this.dropsCount}
-        mistakes = ${this.mistakes}
-        missed = ${this.missed}`);
         clearInterval(this.timeAddDrop);
         clearInterval(this.timeGame);
-        return;
       }
+      item.main.remove();
     }
   }
 
@@ -148,6 +132,7 @@ export default class PlayPage {
       const selectedButton = e.target.closest("button");
       this.interface.keyboard.pressButton(selectedButton);
       if (selectedButton) {
+        
         if (selectedButton.dataset.name === "NumpadEnter") {
           this.checkSolution();
           this.interface.keyboard.clearScreen();
@@ -159,16 +144,19 @@ export default class PlayPage {
           this.interface.keyboard.clearScreen();
           return;
         }
-
         this.interface.keyboard.screen.display.value +=
           selectedButton.textContent;
+          document.querySelector(`[data-name="click-sound"]`).play();
       }
     });
 
     window.addEventListener("keydown", (e) => {
       const key = this.interface.keyboard.buttons.main.querySelector(
         `[data-name="${e.code}"]`
+        
       );
+
+      
       this.interface.keyboard.pressButton(key);
       if (e.code === "NumpadEnter" || e.code === "Enter") {
         this.checkSolution();
@@ -220,6 +208,7 @@ export default class PlayPage {
           });
           this.area.arrayDrops.length = 0;
           counter++;
+          document.querySelector(`[data-name="bonus-sound"]`).play();
         } else if (item.main.classList.contains("drop--gold")) {
           this.area.arrayDrops.forEach((item) => {
             item.main.remove();
@@ -227,51 +216,54 @@ export default class PlayPage {
           this.area.arrayDrops.length = 0;
           this.interface.score.increaseScore();
           counter++;
+          document.querySelector(`[data-name="bonus-sound"]`).play();
         } else if (item.main.classList.contains("heart")) {
           if (this.life !== 3) {
             this.life++;
             this.area.point++;
           }
-          this.interface.keyboard.ah();
+          this.interface.keyboard.addHeart();
           this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item), 1);
           item.main.remove();
           counter++;
+          document.querySelector(`[data-name="life-sound"]`).play();
         } else {
           this.interface.score.increaseScore();
           this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item), 1);
           item.main.remove();
           counter++;
+          document.querySelector(`[data-name="pop-sound"]`).play();
         }
         this.solution++;
+        this.level++;
+        this.addOperation();
+        this.increaseNumber();
+        
         if (this.timeInterval > 1000) {
-          this.timeInterval -= 50;
+          this.timeInterval -= 10;
           clearInterval(this.timeAddDrop);
           this.addDrop(this.timeInterval);
-          Drop.prototype.speed += 0.01;
+          Drop.prototype.speed += 0.001;
         }
       }
     });
 
     if (counter === 0) {
+      document.querySelector(`[data-name="error-sound"]`).play();
       this.life--;
       this.area.point--;
-      this.interface.keyboard.dh();
+      this.interface.keyboard.removeHeart();
       this.interface.score.decreaseScrore();
       this.mistakes++;
     }
   }
-  verifyDecided() {
-    if (this.isDecided) {
-      this.isDecided = false;
-      clearInterval(this.time);
-      this.startGame();
-    }
-  }
+ 
   addDrop(timeInterval) {
     if (this.isAutoPlay) {
       this.timeAddDrop = setInterval(
         () => {
           if (!this.isPause) {
+          
             this.area.addDrop();
             this.AutoPlay();
           }
@@ -284,6 +276,7 @@ export default class PlayPage {
       this.timeAddDrop = setInterval(
         () => {
           if (!this.isPause) {
+           
             this.area.addDrop();
             
           }
@@ -293,4 +286,44 @@ export default class PlayPage {
       );
     }
   }
+
+  hiddePage() {
+    this.main.style.display = "none";
+    this.area.water.main.style.height = "0px";
+    document.querySelector(`[data-name="gameover-sound"]`).play();
+  }
+  nextPage() {
+    this.main.classList.add("play-page--hidden");
+    clearInterval(this.timeAddDrop);
+    clearInterval(this.timeGame);
+  }
+
+  removePage() {
+    this.main.classList.remove("play-page--hidden");
+    this.timeInterval = 6000;
+    Drop.prototype.speed = 1;
+    this.life = 3;
+    this.area.destroyAllDrops();
+    this.interface.keyboard.drawLife();
+    document.querySelector(`[data-name="water-sound"]`).pause();
+    this.main.remove();
+  }
+
+  addOperation () {
+    if(this.level > 20 && Drop.prototype.selectedOperations.size < 2) {
+      Drop.prototype.selectedOperations.add("-");
+    }else if(this.level > 30 && Drop.prototype.selectedOperations.size < 3) {
+      Drop.prototype.selectedOperations.add("*");
+    }else if(this.level > 50 && Drop.prototype.selectedOperations.size < 4) {
+      Drop.prototype.selectedOperations.add("/")
+    }
+  }
+
+  increaseNumber() {
+    if(this.level % 5 === 0) {
+      Drop.prototype.maxValue++;
+    }
+    
+  }
 }
+
