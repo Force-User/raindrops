@@ -1,3 +1,3 @@
 #RainDrops
 
-[link](https://github.com/ThisIsAntony/raindrops/dist);
+[link](https://ThisIsAntony.github.io/raindrops/dist);
