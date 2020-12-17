@@ -14,9 +14,9 @@ export default class Drop {
     fragment.innerHTML = template;
     fragment.remove();
     this.main = fragment.querySelector(".drop");
-    this.firstValue = this.main.querySelector(`[data-name="firstValue"]`);
-    this.secondValue = this.main.querySelector(`[data-name="secondValue"]`);
-    this.operation = this.main.querySelector(`[data-name="operation"]`);
+    this.firstValue = this.main.querySelector('[data-name="firstValue"]');
+    this.secondValue = this.main.querySelector('[data-name="secondValue"]');
+    this.operation = this.main.querySelector('[data-name="operation"]');
     
   }
 

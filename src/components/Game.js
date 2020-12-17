@@ -26,15 +26,15 @@ export default class Game {
     this.parametrs.init();
     this.playPage.init();
     this.endPage.init();
-    this.handleEvent();
+    this.handleEvents();
   }
 
-  handleEvent() {
+  handleEvents() {
     this.opening.main.addEventListener("animationend", (e) => {
       if (e.animationName === "hidde") {
         this.opening.hiddenPage();
         this.opening.removePage();
-        this.parametrs.showComponent();
+        this.parametrs.showPage();
         this.playPage.isAutoPlay = this.opening.isAutoPlay;
       }
     });
@@ -85,6 +85,5 @@ export default class Game {
     this.endPage.statistics.solutions.textContent = this.playPage.solution;
     this.endPage.statistics.mistakes.textContent = this.playPage.mistakes;
     this.endPage.statistics.missed.textContent = this.playPage.missed;
-    this.endPage.statistics.drops.textContent = this.playPage.dropsCount;
   }
 }

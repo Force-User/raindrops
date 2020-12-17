@@ -2,7 +2,6 @@ import Water from "./water/water-element";
 import template from "./game-area.html";
 import Drop from "./drop/drop-element";
 import "./game-area.scss";
-import OrdinaryDrop from "./drop/normal-drop/normal-drop";
 import GoldDrop from "./drop/gold-drop/gold-drop";
 import PlatinumDrop from "./drop/platinum-drop/platinum-drop";
 import Heart from "./drop/heart/heart";
@@ -20,7 +19,7 @@ export default class Area {
     this.main = fragment.querySelector(".game-area");
     Drop.prototype.parent = this.main;
     this.water.init();
-    this.pause = this.main.querySelector('.pause');
+    this.pause = this.main.querySelector(".pause");
     this.pauseScreen = this.main.querySelector(".back");
     this.main.append(this.pause,this.pauseScreen,this.water.main);
   }

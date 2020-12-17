@@ -21,6 +21,11 @@ export default class PlayPage {
     this.timeInterval = 6000;
     this.isAutoPlay = false;
     this.isPause = false;
+
+    this.handlerPause;
+    this.handlerKeybordClick;
+    this.handlerKeypressKeyboard;
+    this.handlerPageVisibility;
   }
 
   init() {
@@ -28,11 +33,12 @@ export default class PlayPage {
     const fragment = document.createElement("div");
     fragment.innerHTML = template;
     this.main = fragment.querySelector(".play-page");
+
     this.area.init();
     this.interface.init();
 
     this.main.append(this.area.main, this.interface.main);
-    this.handleEvents();
+   
   }
 
   showPage() {
@@ -41,6 +47,30 @@ export default class PlayPage {
     this.main.classList.remove("play-page--hidden");
     this.main.style.display = "flex";
     this.interface.keyboard.buttons.main.focus();
+    this.handleEvents();
+  }
+
+  hiddePage() {
+    this.main.style.display = "none";
+    this.area.water.main.style.height = "0px";
+    document.querySelector('[data-name="gameover-sound"]').play();
+  }
+  nextPage() {
+    this.main.classList.add("play-page--hidden");
+    clearInterval(this.timeAddDrop);
+    clearInterval(this.timeGame);
+  }
+
+  removePage() {
+    this.main.classList.remove("play-page--hidden");
+    this.timeInterval = 6000;
+    Drop.prototype.speed = 1;
+    this.life = 3;
+    this.area.destroyAllDrops();
+    this.interface.keyboard.drawLife();
+    document.querySelector('[data-name="water-sound"]').pause();
+    this.main.remove();
+    this.removeHandleEvents();
   }
 
   clearStatistics() {
@@ -50,8 +80,8 @@ export default class PlayPage {
   }
 
   startGame() {
-    document.querySelector(`[data-name="water-sound"]`).play();
-    document.querySelector(`[data-name="water-sound"]`).volume = 0.2;
+    document.querySelector('[data-name="water-sound"]').play();
+    document.querySelector('[data-name="water-sound"]').volume = 0.2;
     this.addDrop(this.timeInterval);
 
     this.beginFallDrop();
@@ -71,6 +101,7 @@ export default class PlayPage {
 
   AutoPlay() {
     let result = null;
+    this.interface.keyboard.main.style.pointerEvents = "none";
     this.area.arrayDrops.every((item) => {
       result = this.mathOperation(item);
       return false;
@@ -96,7 +127,7 @@ export default class PlayPage {
       this.area.water.main.getBoundingClientRect().y -
         item.main.getBoundingClientRect().height
     ) {
-      document.querySelector(`[data-name="drop-sound"]`).play();
+      document.querySelector('[data-name="drop-sound"]').play();
       this.interface.score.decreaseScrore();
       this.area.water.waterIncrease();
       this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item), 1);
@@ -114,60 +145,83 @@ export default class PlayPage {
   }
 
   handleEvents() {
-    this.area.pause.addEventListener("click", (e) => {
-      this.togglePause();
-    });
-    this.interface.keyboard.buttons.main.addEventListener("click", (e) => {
-      const selectedButton = e.target.closest("button");
-      this.interface.keyboard.pressButton(selectedButton);
-      if (selectedButton) {
-        if (selectedButton.dataset.name === "NumpadEnter") {
-          this.checkSolution();
-          this.interface.keyboard.clearScreen();
-          return;
-        } else if (selectedButton.dataset.name === "Backspace") {
-          this.interface.keyboard.deleteOneNumberToScreen();
-          return;
-        } else if (selectedButton.dataset.name === "clear") {
-          this.interface.keyboard.clearScreen();
-          return;
-        }
-        this.interface.keyboard.screen.display.value +=
-          selectedButton.textContent;
-        document.querySelector(`[data-name="click-sound"]`).play();
-      }
-    });
+    this.area.pause.addEventListener(
+      "click",
+      (this.handlerPause = () => {
+        this.togglePause();
+      })
+    );
 
-    document.addEventListener("keydown", (e) => {
-      if (document.querySelector(".play-page")) {
-        const key = this.interface.keyboard.buttons.main.querySelector(
-          `[data-name="${e.code}"]`
-        );
+    this.interface.keyboard.buttons.main.addEventListener(
+      "click",
+      (this.handlerKeybordClick = (e) => {
+        const selectedButton = e.target.closest("button");
+        this.interface.keyboard.pressButton(selectedButton);
+        if (selectedButton) {
+          if (selectedButton.dataset.name === "NumpadEnter") {
+            this.checkSolution();
+            this.interface.keyboard.clearScreen();
+            return;
+          } else if (selectedButton.dataset.name === "Backspace") {
+            this.interface.keyboard.deleteOneNumberToScreen();
+            return;
+          } else if (selectedButton.dataset.name === "clear") {
+            this.interface.keyboard.clearScreen();
+            return;
+          }
+          this.interface.keyboard.screen.display.value +=
+            selectedButton.textContent;
+          document.querySelector('[data-name="click-sound"]').play();
+        }
+      })
+    );
 
-        this.interface.keyboard.pressButton(key);
-        if (e.code === "NumpadEnter" || e.code === "Enter") {
-          this.checkSolution();
-          this.interface.keyboard.clearScreen();
-          return;
-        } else if (e.code === "Backspace") {
-          this.interface.keyboard.deleteOneNumberToScreen();
-          return;
+    document.addEventListener(
+      "keydown",
+      (this.handlerKeypressKeyboard = (e) => {
+        if (!this.isAutoPlay) {
+          if (document.querySelector(".play-page")) {
+            const key = this.interface.keyboard.buttons.main.querySelector(
+              `[data-name="${e.code}"]`
+            );
+            if (key) {
+              this.interface.keyboard.pressButton(key);
+              if (e.code === "NumpadEnter" || e.code === "Enter") {
+                this.checkSolution();
+                this.interface.keyboard.clearScreen();
+                return;
+              } else if (e.code === "Backspace") {
+                this.interface.keyboard.deleteOneNumberToScreen();
+                return;
+              }
+              this.interface.keyboard.screen.display.value += key.textContent;
+            }
+          }
         }
-        this.interface.keyboard.screen.display.value += key.textContent;
-      }
-    });
-    document.addEventListener('visibilitychange', (e) => {
-      if(document.querySelector(".play-page")) {
-        const sound  = document.querySelector(`[data-name="water-sound"]`);
-        if(document.hidden) {
-          this.togglePause();
-          sound.pause();
-        }else {
-          sound.play();
-          this.togglePause();
+      })
+    );
+    document.addEventListener(
+      "visibilitychange",
+      (this.handlerPageVisibility = () => {
+        if (document.querySelector(".play-page")) {
+          const sound = document.querySelector('[data-name="water-sound"]');
+          if (document.hidden) {
+            this.togglePause();
+            sound.pause();
+          } else {
+            sound.play();
+            this.togglePause();
+          }
         }
-      }
-    })
+      })
+    );
+  }
+
+  removeHandleEvents() {
+    this.area.pause.removeEventListener("click", this.handlerPause);
+    this.interface.keyboard.buttons.main.removeEventListener("click", this.handlerKeybordClick);
+    document.removeEventListener("keydown",this.handlerKeypressKeyboar);
+    document.addEventListener("visibilitychange",this.handlerPageVisibility);
   }
 
   mathOperation(item) {
@@ -208,7 +262,7 @@ export default class PlayPage {
           });
           this.area.arrayDrops.length = 0;
           counter++;
-          document.querySelector(`[data-name="bonus-sound"]`).play();
+          document.querySelector('[data-name="bonus-sound"]').play();
         } else if (item.main.classList.contains("drop--gold")) {
           this.area.arrayDrops.forEach((item) => {
             item.main.remove();
@@ -216,7 +270,7 @@ export default class PlayPage {
           this.area.arrayDrops.length = 0;
           this.interface.score.increaseScore();
           counter++;
-          document.querySelector(`[data-name="bonus-sound"]`).play();
+          document.querySelector('[data-name="bonus-sound"]').play();
         } else if (item.main.classList.contains("heart")) {
           if (this.life !== 3) {
             this.life++;
@@ -226,13 +280,13 @@ export default class PlayPage {
           this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item), 1);
           item.main.remove();
           counter++;
-          document.querySelector(`[data-name="life-sound"]`).play();
+          document.querySelector('[data-name="life-sound"]').play();
         } else {
           this.interface.score.increaseScore();
           this.area.arrayDrops.splice(this.area.arrayDrops.indexOf(item), 1);
           item.destroyDrop();
           counter++;
-          document.querySelector(`[data-name="pop-sound"]`).play();
+          document.querySelector('[data-name="pop-sound"]').play();
         }
         this.solution++;
         this.level++;
@@ -249,7 +303,7 @@ export default class PlayPage {
     });
 
     if (counter === 0) {
-      document.querySelector(`[data-name="error-sound"]`).play();
+      document.querySelector('[data-name="error-sound"]').play();
       this.life--;
       this.area.point--;
       this.interface.keyboard.removeHeart();
@@ -260,17 +314,13 @@ export default class PlayPage {
 
   addDrop(timeInterval) {
     if (this.isAutoPlay) {
-      this.timeAddDrop = setInterval(
-        () => {
-          if (!this.isPause) {
-            this.area.addDrop();
-            this.AutoPlay();
-          }
-        },
-        timeInterval,
-        this.area.addDrop(),
-        this.AutoPlay()
-      );
+      timeInterval = 3000;
+      this.timeAddDrop = setInterval(() => {
+        if (!this.isPause) {
+          this.area.addDrop();
+          this.AutoPlay();
+        }
+      }, timeInterval);
     } else {
       this.timeAddDrop = setInterval(
         () => {
@@ -284,29 +334,8 @@ export default class PlayPage {
     }
   }
 
-  hiddePage() {
-    this.main.style.display = "none";
-    this.area.water.main.style.height = "0px";
-    document.querySelector(`[data-name="gameover-sound"]`).play();
-  }
-  nextPage() {
-    this.main.classList.add("play-page--hidden");
-    clearInterval(this.timeAddDrop);
-    clearInterval(this.timeGame);
-  }
-
-  removePage() {
-    this.main.classList.remove("play-page--hidden");
-    this.timeInterval = 6000;
-    Drop.prototype.speed = 1;
-    this.life = 3;
-    this.area.destroyAllDrops();
-    this.interface.keyboard.drawLife();
-    document.querySelector(`[data-name="water-sound"]`).pause();
-    this.main.remove();
-  }
   togglePause() {
-    if (this.isPause === false) {
+    if (!this.isPause) {
       const playImage = `<path d="M68 39L0.499996 77.9711L0.5 0.0288552L68 39Z" fill="white"/>`;
       this.area.pauseScreen.style.display = "flex";
       this.area.pause.innerHTML = playImage;
@@ -314,7 +343,6 @@ export default class PlayPage {
     } else {
       const pauseImage = `<rect width="30" height="90" fill="white"/>
       <rect x="40" width="30" height="90" fill="white"/>`;
-      console.log("adad", this.area.pauseScreen);
       this.area.pauseScreen.style.display = "none";
       this.area.pause.innerHTML = pauseImage;
       this.beginFallDrop();

@@ -16,10 +16,10 @@ export default class Statistics {
 
         this.main = container.querySelector(".statistics");
         this.title = this.main.querySelector('.statistics__title');
-        this.score = this.main.querySelector(`[data-name="score"]`);
-        this.solutions = this.main.querySelector(`[data-name="solutions"]`);
-        this.mistakes = this.main.querySelector(`[data-name="mistakes"]`);
-        this.missed = this.main.querySelector(`[data-name="missed"]`);
+        this.score = this.main.querySelector('[data-name="score"]');
+        this.solutions = this.main.querySelector('[data-name="solutions"]');
+        this.mistakes = this.main.querySelector('[data-name="mistakes"]');
+        this.missed = this.main.querySelector('[data-name="missed"]');
         this.buttons = this.main.querySelector('.statistics-buttons');
 
     }

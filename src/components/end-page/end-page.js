@@ -20,15 +20,14 @@ export default class EndPage {
 
     this.statistics.init();
     this.main.append(this.statistics.main);
-    this.handleEvenet();
   }
 
   handleEvenet() {
-    this.statistics.buttons.addEventListener("click", (e) => {
+    this.statistics.buttons.addEventListener("click", this.handlerClickButton = (e) => {
       const selectedButton = e.target.closest("button");
 
       if (selectedButton) {
-        document.querySelector(`[data-name="button-sound"]`).play();
+        document.querySelector('[data-name="button-sound"]').play();
         if (selectedButton.dataset.name === "restart") {
           this.restartGame();
         } else if (selectedButton.dataset.name === "return") {
@@ -37,9 +36,13 @@ export default class EndPage {
       }
     });
   }
+  removeHandleEvent() {
+    this.statistics.buttons.removeEventListener("click", this.handlerClickButton);
+  }
 
   showPage() {
     document.querySelector(".game").append(this.main);
+    this.handleEvenet();
     this.main.style.display = "flex";
     this.main.classList.remove("end-page--restart", "end-page--return");
   }
@@ -54,6 +57,7 @@ export default class EndPage {
   }
 
   removePage() {
+    this.removeHandleEvent();
     this.main.style.display = "none";
     this.main.remove();
   }

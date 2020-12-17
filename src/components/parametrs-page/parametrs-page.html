@@ -3,13 +3,15 @@
     <div class="parametrs-content">
       <div class="parametrs-value">
         <h2 class="parametrs-value__title">Выберите диапозон чисел</h2>
-        <div class="value-content">
+        <form class="value-content">
           <label class="value-block">
             <span class="value-block__text">Min</span>
             <input
               type="text"
               class="value-block__input"
+              pattern="/d*"
               value="1"
+              maxlength="5"
               data-name="min-value"
             />
           </label>
@@ -17,12 +19,14 @@
             <span class="value-block__text">Max</span>
             <input
               type="text"
+              pattern="/d*"
               class="value-block__input"
               value="10"
+              maxlength="5"
               data-name="max-value"
             />
           </label>
-        </div>
+        </form>
       </div>
       <div class="parametrs-operation">
         <h2 class="parametrs-operation__title">Выберите операции</h2>
