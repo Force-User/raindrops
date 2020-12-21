@@ -1,0 +1,71 @@
+@import "../../sass/style.scss";
+.opening {
+  width: 100%;
+  height: 100vh;
+  @include flex();
+  flex-direction: column;
+  &__title {
+    font-size: 140px;
+    color: transparent;
+    text-transform: uppercase;
+    background-color: $color-dark;
+    text-shadow: 0 2px 5px $color-title-shadow;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    user-select: none;
+  }
+  &__img {
+    width: 300px;
+  }
+  &--hidden {
+    animation: hidde 0.5s forwards;
+  }
+  &-buttons {
+    @include flex(center, space-around);
+    margin-bottom: 50px;
+    &__button {
+      padding: 20px 40px;
+      font-size: 24px;
+      color: $color-light;
+      border-radius: 5px;
+      transition: 0.5s;
+      cursor: pointer;
+      &:nth-child(1) {
+        background-color: $color-button-tutorial;
+      }
+      &:nth-child(2) {
+        margin-left: 20px;
+        background-color: $color-button-start;
+      }
+      &:hover {
+        background-color: $color-button-hover;
+        box-shadow: 0px 3px 5px 5px $color-dark;
+      }
+    }
+  }
+}
+
+@keyframes hidde {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 1280px) {
+  .opening__title {
+    font-size: 45px;
+  }
+  .opening__drop {
+    width: 250px;
+  }
+  .opening-buttons__button {
+    padding: 20px;
+  }
+  .opening__img {
+    width: 250px;
+  }
+}

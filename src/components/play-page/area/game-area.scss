@@ -1,0 +1,63 @@
+@import "../../../sass/style.scss";
+
+.game-area {
+  position: relative;
+  width: 70%;
+  height: 100%;
+  @include flex(flex-end);
+  background-image: url("../../../assets/image/forest.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0;
+  animation: show 0.5s forwards;
+  &>img {
+    width: 80%;
+    z-index:-5;
+  }
+  &--hidden {
+    animation: hidde 0.5s forwards;
+  }
+}
+
+
+
+.back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  @include flex();
+  display: none;
+  font-size: 100px;
+  text-transform: uppercase;
+  color: $color-light;
+  z-index: 1;
+  background-color: $color-dark;
+}
+.pause {
+  position: absolute;
+  top: 100px;
+  left: 25px;
+  transition: 0.5s;
+  color: $color-light;
+  z-index: 2;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+@keyframes show {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes hidde {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

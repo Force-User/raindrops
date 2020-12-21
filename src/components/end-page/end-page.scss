@@ -1,0 +1,54 @@
+@import "../../sass/style.scss";
+.end-page {
+  width: 100%;
+  height: 100vh;
+  @include flex(center, space-evenly);
+  flex-direction: column;
+  opacity: 0;
+  animation: show 0.5s forwards;
+  transition: 0.7s;
+  &__title {
+    text-align: center;
+    font-size: 10rem;
+    text-transform: uppercase;
+    color: $color-title-end;
+    user-select: none;
+    text-shadow: 0 2px 5px $color-dark;
+  }
+  &--restart {
+    animation: restart 0.5s forwards;
+  }
+  &--return {
+    animation: return 0.5s forwards;
+  }
+}
+
+@keyframes show {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes restart {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes return {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .end-page__title {
+    font-size: 3rem;
+  }
+}
