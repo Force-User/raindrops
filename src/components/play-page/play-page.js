@@ -38,7 +38,6 @@ export default class PlayPage {
     this.interface.init();
 
     this.main.append(this.area.main, this.interface.main);
-   
   }
 
   showPage() {
@@ -181,20 +180,19 @@ export default class PlayPage {
       (this.handlerKeypressKeyboard = (e) => {
         if (!this.isAutoPlay) {
           if (document.querySelector(".play-page")) {
-            const key = this.interface.keyboard.buttons.main.querySelector(
-              `[data-name="${e.code}"]`
-            );
-            if (key) {
-              this.interface.keyboard.pressButton(key);
-              if (e.code === "NumpadEnter" || e.code === "Enter") {
-                this.checkSolution();
-                this.interface.keyboard.clearScreen();
-                return;
-              } else if (e.code === "Backspace") {
-                this.interface.keyboard.deleteOneNumberToScreen();
-                return;
-              }
-              this.interface.keyboard.screen.display.value += key.textContent;
+            if (
+              (e.keyCode >= 48 && e.keyCode <= 57) ||
+              (e.keyCode >= 96 && e.keyCode <= 105)
+            ) {
+              this.interface.keyboard.screen.display.value += e.key;
+              return;
+            } else if (e.keyCode === 8) {
+              this.interface.keyboard.deleteOneNumberToScreen();
+              return;
+            } else if (e.keyCode === 13) {
+              this.checkSolution();
+              this.interface.keyboard.clearScreen();
+              return;
             }
           }
         }
@@ -219,9 +217,12 @@ export default class PlayPage {
 
   removeHandleEvents() {
     this.area.pause.removeEventListener("click", this.handlerPause);
-    this.interface.keyboard.buttons.main.removeEventListener("click", this.handlerKeybordClick);
-    document.removeEventListener("keydown",this.handlerKeypressKeyboar);
-    document.addEventListener("visibilitychange",this.handlerPageVisibility);
+    this.interface.keyboard.buttons.main.removeEventListener(
+      "click",
+      this.handlerKeybordClick
+    );
+    document.removeEventListener("keydown", this.handlerKeypressKeyboar);
+    document.addEventListener("visibilitychange", this.handlerPageVisibility);
   }
 
   mathOperation(item) {

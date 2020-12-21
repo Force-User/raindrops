@@ -42,7 +42,7 @@ export default class Game {
     this.parametrs.main.addEventListener("animationend", (e) => {
       if (e.animationName === "hidde") {
         this.parametrs.hiddePage();
-        this.parametrs.setValueToDrop(this.playPage);
+        this.parametrs.setValueToDrop();
         this.parametrs.removePage();
         this.playPage.showPage();
         this.playPage.startGame();
